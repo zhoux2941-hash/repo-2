@@ -34,11 +34,11 @@ onMounted(() => {
   <div class="line_chart_page">
     <el-scrollbar>
       <el-row :gutter="24">
-        <el-col :span="24">
+        <el-col :span="24" style="margin-bottom: 20px">
           <el-card shadow="always">
             <el-page-header :icon="Histogram">
               <template #title>
-                <span>折线图</span>
+                <span>双折线图</span>
               </template>
             </el-page-header>
             <div class="chart1">
