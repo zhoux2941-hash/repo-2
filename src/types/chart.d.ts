@@ -4,12 +4,24 @@ export interface ChartProps {
 }
 
 export type lineDataOneType = {
-  times: array<string>
-  nowValue: array<number>
-  yesValue: array<number>
+  times: Array<string>
+  nowValue: Array<number>
+  yesValue: Array<number>
 }
 
 export type lineDataTwoType = {
-  times: array<string>
-  value: array<number>
+  times: Array<string>
+  value: Array<number>
+}
+
+export type hisDataOneType = {
+  aData: Array<hisDataOneObjType>
+  bData: Array<hisDataOneObjType>
+  title: Array<string>
+}
+type hisDataOneObjType = {
+  data: Array<string>
+  id: string
+  name: string
+  value: number
 }

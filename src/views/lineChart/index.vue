@@ -52,7 +52,7 @@ onMounted(async () => {
                 <span>双折线图</span>
               </template>
             </el-page-header>
-            <div class="chart1">
+            <div class="chart">
               <Chart1 ref="Chart1Ref" />
             </div>
           </el-card>
@@ -64,7 +64,7 @@ onMounted(async () => {
                 <span>自定义图标折线图</span>
               </template>
             </el-page-header>
-            <div class="chart1">
+            <div class="chart">
               <Chart2 ref="Chart2Ref" />
             </div>
           </el-card>
@@ -84,7 +84,7 @@ onMounted(async () => {
   background-position: center;
   background-repeat: no-repeat;
 }
-.chart1 {
+.chart {
   height: 50vh;
 }
 </style>
