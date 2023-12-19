@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { Histogram } from '@element-plus/icons-vue'
+import axios from 'axios'
 import { ECharts } from 'echarts'
 import { onMounted, ref } from 'vue'
-import type { ChartProps } from '../../types/chart'
+import type { ChartProps, lineDataOneType, lineDataTwoType } from '../../types/chart'
 import Chart1 from './component/chart1.vue'
+import Chart2 from './component/chart2.vue'
 
 // 监听到切换页面自动刷新
 window.onresize = function () {
@@ -11,21 +13,30 @@ window.onresize = function () {
 }
 
 const dataScreen: ChartProps = {
-  chart1: null
+  chart1: null,
+  chart2: null
 }
 // 获取子组件的ref
 interface ChartExpose {
   initChart: (params: any) => ECharts
 }
 const Chart1Ref = ref<ChartExpose>()
-// 初始化 charts参数
-const data = ref({})
+const Chart2Ref = ref<ChartExpose>()
 // 初始化 charts
 const initCharts = (): void => {
-  dataScreen.chart1 = Chart1Ref.value?.initChart(data.value) as ECharts
+  dataScreen.chart1 = Chart1Ref.value?.initChart(lineDataOne.value) as ECharts
+  dataScreen.chart2 = Chart2Ref.value?.initChart(lineDataTwo.value) as ECharts
 }
 
-onMounted(() => {
+// 初始化 charts参数
+const lineDataOne = ref<lineDataOneType>()
+const lineDataTwo = ref<lineDataTwoType>()
+onMounted(async () => {
+  const lineDataRes = await axios.get('src/assets/json/chartsData.json')
+  console.log(lineDataRes)
+  lineDataOne.value = lineDataRes.data.lineDataOne
+  lineDataTwo.value = lineDataRes.data.lineDataTwo
+
   initCharts()
 })
 </script>
@@ -50,10 +61,12 @@ onMounted(() => {
           <el-card shadow="always">
             <el-page-header :icon="Histogram">
               <template #title>
-                <span>折线图</span>
+                <span>自定义图标折线图</span>
               </template>
             </el-page-header>
-            <div class="chart1"></div>
+            <div class="chart1">
+              <Chart2 ref="Chart2Ref" />
+            </div>
           </el-card>
         </el-col>
       </el-row>

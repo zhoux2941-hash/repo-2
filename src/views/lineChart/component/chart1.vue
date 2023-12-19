@@ -5,14 +5,9 @@
 
 <script setup lang="ts">
 import * as echarts from 'echarts'
+import type { lineDataOneType } from '../../../types/chart'
 
-const data = {
-  times: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-  nowValue: [34, 54, 13, 45, 76, 56, 8, 46, 23, 35, 4, 24],
-  yesValue: [56, 24, 3, 35, 56, 26, 29, 36, 13, 25, 4, 34]
-}
-
-const initChart = (sum: any): echarts.ECharts => {
+const initChart = (data: lineDataOneType): echarts.ECharts => {
   const charEle = document.getElementById('chart1') as HTMLElement
   const charEch: echarts.ECharts = echarts.init(charEle)
   const option: any = {
