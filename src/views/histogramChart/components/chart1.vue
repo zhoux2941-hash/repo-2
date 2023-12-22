@@ -15,7 +15,24 @@ interface DataItem {
 const emit = defineEmits(['eventData'])
 
 const initChart = (hrData: any): echarts.ECharts => {
-  console.log(hrData)
+  // console.log(hrData)
+
+  // 用于堆叠柱状图显示多个柱子总数
+  //        如看到代码后有更好优化，望及时指出
+  let list: any = []
+  list = hrData.title.map((item: any) => {
+    return {
+      name: item,
+      value: 0
+    }
+  })
+  for (let i = 0; i < list.length; i++) {
+    let sum = 0
+    if (hrData.aData[i].name === hrData.bData[i].name) {
+      sum = hrData.aData[i].value + hrData.bData[i].value
+      list[i].value = sum
+    }
+  }
 
   const charEle = document.getElementById('hrUnitChart') as HTMLElement
   const charEch: echarts.ECharts = echarts.init(charEle)
@@ -165,6 +182,25 @@ const initChart = (hrData: any): echarts.ECharts => {
             ]
           }
         },
+        // 用来显示柱子上的数值
+        label: {
+          show: true,
+          position: 'top',
+          color: '#000',
+          fontSize: 14,
+          formatter: function (params: any) {
+            let value: any = ''
+            // 判断是否为父级
+            if (typeof params.data !== 'number') {
+              list.forEach((item: any) => {
+                if (item.name === params.name) {
+                  value = item.value
+                }
+              })
+            }
+            return value
+          }
+        },
         data: hrData.bData,
         universalTransition: {
           enabled: true,
@@ -206,6 +242,25 @@ const initChart = (hrData: any): echarts.ECharts => {
       // 将数据传给父组件
       const eventData = subData
       emit('eventData', eventData)
+
+      let onClickList: any = []
+      onClickList = subData.data.map((item: any) => {
+        let obj = {}
+        obj = JSON.parse(JSON.stringify(item))
+        return {
+          name: Object.keys(obj)[0],
+          value: 0
+        }
+      })
+      for (let i = 0; i < onClickList.length; i++) {
+        let sum = 0
+        if (subData.data[i].name === subData2.data[i].name) {
+          let subSum: any = Object.values(subData.data[i])[0]
+          let sub2Sum: any = Object.values(subData2.data[i])[0]
+          sum = subSum + sub2Sum
+          onClickList[i].value = sum
+        }
+      }
 
       charEch.setOption<echarts.EChartsOption>({
         tooltip: {
@@ -268,7 +323,22 @@ const initChart = (hrData: any): echarts.ECharts => {
             stack: 'HR',
             data: subData2.data.map(function (item: any) {
               return item[Object.keys(item)[0]]
-            })
+            }),
+            label: {
+              show: true,
+              position: 'top',
+              color: '#000',
+              fontSize: 14,
+              formatter: function (params: any) {
+                let value: any = ''
+                onClickList.forEach((item: any) => {
+                  if (item.name === params.name) {
+                    value = item.value
+                  }
+                })
+                return value
+              }
+            }
           }
         ],
         // 返回字样出现
@@ -307,6 +377,26 @@ const initChart = (hrData: any): echarts.ECharts => {
         // 将数据传给父组件
         const eventData = event.data
         emit('eventData', eventData)
+
+        // 处理下钻显示总数
+        let onClickList: any = []
+        onClickList = subData.data.map((item: any) => {
+          let obj = {}
+          obj = JSON.parse(JSON.stringify(item))
+          return {
+            name: Object.keys(obj)[0],
+            value: 0
+          }
+        })
+        for (let i = 0; i < onClickList.length; i++) {
+          let sum = 0
+          if (subData.data[i].name === subData2.data[i].name) {
+            let subSum: any = Object.values(subData.data[i])[0]
+            let sub2Sum: any = Object.values(subData2.data[i])[0]
+            sum = subSum + sub2Sum
+            onClickList[i].value = sum
+          }
+        }
 
         charEch.setOption<echarts.EChartsOption>({
           tooltip: {
@@ -369,7 +459,26 @@ const initChart = (hrData: any): echarts.ECharts => {
               stack: 'HR',
               data: subData2.data.map(function (item: any) {
                 return item[Object.keys(item)[0]]
-              })
+              }),
+              // 用来显示柱子上的数值
+              label: {
+                show: true,
+                position: 'top',
+                color: '#000',
+                fontSize: 14,
+                formatter: function (params: any) {
+                  let value: any = ''
+                  // 判断是否为父级
+                  if (typeof params.data !== 'number') {
+                    list.forEach((item: any) => {
+                      if (item.name === params.name) {
+                        value = item.value
+                      }
+                    })
+                  }
+                  return value
+                }
+              }
             }
           ],
           // 返回字样出现

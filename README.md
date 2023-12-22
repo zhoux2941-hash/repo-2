@@ -33,3 +33,7 @@ npm run dev
 ## 关于
 
 个人首次写一些小东西，还不是很熟练，如果有幸有人可以看到此仓库，可以多多帮忙指出问题~！
+
+个人微信：（微信交流）
+
+![image-20231222153957908](C:%5CUsers%5CTao%20Jialun%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20231222153957908.png)
