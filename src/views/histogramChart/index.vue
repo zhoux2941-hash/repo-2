@@ -3,8 +3,10 @@ import { Histogram } from '@element-plus/icons-vue'
 import axios from 'axios'
 import { ECharts } from 'echarts'
 import { onMounted, ref } from 'vue'
-import type { ChartProps, hisDataOneType } from '../../types/chart'
+import type { ChartProps, hisDataOneType, hisDataThreeType, hisDataTwoType } from '../../types/chart'
 import Chart1 from './components/chart1.vue'
+import Chart2 from './components/chart2.vue'
+import Chart3 from './components/chart3.vue'
 
 // 监听到切换页面自动刷新
 window.onresize = function () {
@@ -13,25 +15,33 @@ window.onresize = function () {
 
 const dataScreen: ChartProps = {
   chart1: null,
-  chart2: null
+  chart2: null,
+  chart3: null
 }
 // 获取子组件的ref
 interface ChartExpose {
   initChart: (params: any) => ECharts
 }
 const Chart1Ref = ref<ChartExpose>()
+const Chart2Ref = ref<ChartExpose>()
+const Chart3Ref = ref<ChartExpose>()
 // 初始化 charts
 const initCharts = (): void => {
   dataScreen.chart1 = Chart1Ref.value?.initChart(hisDataOne.value) as ECharts
+  dataScreen.chart2 = Chart2Ref.value?.initChart(hisDataTwo.value) as ECharts
+  dataScreen.chart3 = Chart3Ref.value?.initChart(hisDataThree.value) as ECharts
 }
 
 // 初始化 charts参数
 const hisDataOne = ref<hisDataOneType>()
-// const hisDataTwo = ref<hisDataTwoType>()
+const hisDataTwo = ref<hisDataTwoType>()
+const hisDataThree = ref<hisDataThreeType>()
 onMounted(async () => {
   const hisDataRes = await axios.get('src/assets/json/hisData.json')
   console.log(hisDataRes)
   hisDataOne.value = hisDataRes.data.hisDataOne
+  hisDataTwo.value = hisDataRes.data.hisDataTwo
+  hisDataThree.value = hisDataRes.data.hisDataThree
 
   initCharts()
 })
@@ -74,7 +84,9 @@ const eventData = (e: any) => {
                 <span>基础折柱图+自定义图标</span>
               </template>
             </el-page-header>
-            <div class="chart"></div>
+            <div class="chart">
+              <Chart2 ref="Chart2Ref" />
+            </div>
           </el-card>
         </el-col>
         <el-col :span="12" style="margin-bottom: 20px">
@@ -84,7 +96,9 @@ const eventData = (e: any) => {
                 <span>子弹图</span>
               </template>
             </el-page-header>
-            <div class="chart"></div>
+            <div class="chart">
+              <Chart3 ref="Chart3Ref" />
+            </div>
           </el-card>
         </el-col>
       </el-row>

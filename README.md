@@ -36,4 +36,4 @@ npm run dev
 
 个人微信：（微信交流）
 
-![image-20231222153957908](C:%5CUsers%5CTao%20Jialun%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20231222153957908.png)
+![wx](C:%5CUsers%5CTao%20Jialun%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cwx.png)
