@@ -3,11 +3,12 @@ import { Histogram } from '@element-plus/icons-vue'
 import axios from 'axios'
 import { ECharts } from 'echarts'
 import { onMounted, ref } from 'vue'
-import type { ChartProps, hisDataFourType, hisDataOneType, hisDataThreeType, hisDataTwoType } from '../../types/chart'
+import type { ChartProps, hisDataFourType, hisDataOneType, hisDataThreeType, hisDataTwoType, hisDataFiveType } from '../../types/chart'
 import Chart1 from './components/chart1.vue'
 import Chart2 from './components/chart2.vue'
 import Chart3 from './components/chart3.vue'
 import Chart4 from './components/chart4.vue'
+import Chart5 from './components/chart5.vue'
 
 // 监听到切换页面自动刷新
 window.onresize = function () {
@@ -18,7 +19,8 @@ const dataScreen: ChartProps = {
   chart1: null,
   chart2: null,
   chart3: null,
-  chart4: null
+  chart4: null,
+  chart5: null
 }
 // 获取子组件的ref
 interface ChartExpose {
@@ -28,12 +30,14 @@ const Chart1Ref = ref<ChartExpose>()
 const Chart2Ref = ref<ChartExpose>()
 const Chart3Ref = ref<ChartExpose>()
 const Chart4Ref = ref<ChartExpose>()
+const Chart5Ref = ref<ChartExpose>()
 // 初始化 charts
 const initCharts = (): void => {
   dataScreen.chart1 = Chart1Ref.value?.initChart(hisDataOne.value) as ECharts
   dataScreen.chart2 = Chart2Ref.value?.initChart(hisDataTwo.value) as ECharts
   dataScreen.chart3 = Chart3Ref.value?.initChart(hisDataThree.value) as ECharts
   dataScreen.chart4 = Chart4Ref.value?.initChart(hisDataFour.value) as ECharts
+  dataScreen.chart5 = Chart5Ref.value?.initChart(hisDataFive.value) as ECharts
 }
 
 // 初始化 charts参数
@@ -41,6 +45,7 @@ const hisDataOne = ref<hisDataOneType>()
 const hisDataTwo = ref<hisDataTwoType>()
 const hisDataThree = ref<hisDataThreeType>()
 const hisDataFour = ref<hisDataFourType>()
+const hisDataFive = ref<hisDataFiveType>()
 onMounted(async () => {
   const hisDataRes = await axios.get('src/assets/json/hisData.json')
   console.log(hisDataRes)
@@ -48,6 +53,7 @@ onMounted(async () => {
   hisDataTwo.value = hisDataRes.data.hisDataTwo
   hisDataThree.value = hisDataRes.data.hisDataThree
   hisDataFour.value = hisDataRes.data.hisDataFour.data
+  hisDataFive.value = hisDataRes.data.hisDataFive
 
   initCharts()
 })
@@ -116,6 +122,18 @@ const eventData = (e: any) => {
             </el-page-header>
             <div class="chart">
               <Chart4 ref="Chart4Ref" />
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="16" style="margin-bottom: 20px">
+          <el-card shadow="always">
+            <el-page-header :icon="Histogram">
+              <template #title>
+                <span>立体柱状图</span>
+              </template>
+            </el-page-header>
+            <div class="chart">
+              <Chart5 ref="Chart5Ref" />
             </div>
           </el-card>
         </el-col>

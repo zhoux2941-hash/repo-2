@@ -47,3 +47,8 @@ type dataArrType = {
   name: string
   value: number
 }
+
+export type hisDataFiveType = {
+  data: Array<number>
+  title: Array<string>
+}
