@@ -25,6 +25,7 @@ type hisDataOneObjType = {
   name: string
   value: number
 }
+
 export type hisDataTwoType = {
   bOne: Array<number>
   bTwo: Array<number>
@@ -37,4 +38,12 @@ export type hisDataThreeType = {
   one: Array<number>
   two: Array<number>
   title: Array<string>
+}
+
+export type hisDataFourType = {
+  data: Array<dataArrType>
+}
+type dataArrType = {
+  name: string
+  value: number
 }

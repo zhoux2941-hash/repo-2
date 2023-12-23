@@ -1,5 +1,5 @@
 <template>
-  <!-- 人力资源单位/项目分布  单位 -->
+  <!-- 带下钻堆叠柱状图 -->
   <div id="hrUnitChart" class="echarts"></div>
 </template>
 
