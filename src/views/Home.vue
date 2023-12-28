@@ -1,14 +1,70 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Vue3SeamlessScroll } from 'vue3-seamless-scroll'
+const list = ref([
+  {
+    title: 'Vue3.0 无缝滚动组件展示数据第1条',
+    date: Date.now()
+  },
+  {
+    title: 'Vue3.0 无缝滚动组件展示数据第2条',
+    date: Date.now()
+  },
+  {
+    title: 'Vue3.0 无缝滚动组件展示数据第3条',
+    date: Date.now()
+  },
+  {
+    title: 'Vue3.0 无缝滚动组件展示数据第4条',
+    date: Date.now()
+  },
+  {
+    title: 'Vue3.0 无缝滚动组件展示数据第5条',
+    date: Date.now()
+  },
+  {
+    title: 'Vue3.0 无缝滚动组件展示数据第6条',
+    date: Date.now()
+  },
+  {
+    title: 'Vue3.0 无缝滚动组件展示数据第7条',
+    date: Date.now()
+  },
+  {
+    title: 'Vue3.0 无缝滚动组件展示数据第8条',
+    date: Date.now()
+  },
+  {
+    title: 'Vue3.0 无缝滚动组件展示数据第9条',
+    date: Date.now()
+  }
+])
+
+const clickLink = () => {
+  window.open('https://www.npmjs.com/package/seamless-scroll-vue3')
+}
+</script>
 
 <template>
   <div class="home_page">
     <el-row :gutter="24">
-      <el-col :span="24">
+      <el-col :span="12">
         <el-card shadow="always">
           <div class="text text1">CSS字体样式示例1</div>
           <div class="text text2">CSS字体样式示例2</div>
           <div class="text text3">CSS字体样式示例3</div>
           <div class="text text4">CSS字体样式示例4</div>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card shadow="always">
+          <h2 style="margin-bottom: 5px; color: rgb(0, 89, 255)" @click="clickLink">无缝滚动组件展示_点击跳转组件作者链接</h2>
+          <vue3-seamless-scroll :list="list" class="scroll">
+            <div class="item" v-for="(item, index) in list" :key="index">
+              <span>{{ item.title }}</span>
+              <span>{{ item.date }}</span>
+            </div>
+          </vue3-seamless-scroll>
         </el-card>
       </el-col>
     </el-row>
@@ -48,5 +104,17 @@
 .text4 {
   color: rgba(255, 179, 140, 0.5);
   text-shadow: 3px 3px 0 rgba(180, 255, 0, 0.5);
+}
+// 滚动组件样式
+.scroll {
+  height: 200px;
+  overflow: hidden;
+}
+
+.scroll .item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 0;
 }
 </style>
