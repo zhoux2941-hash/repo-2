@@ -14,6 +14,7 @@
               <router-link to="/histogramChart"> <el-menu-item>柱状图 </el-menu-item></router-link>
               <router-link to="/pieChart"> <el-menu-item>饼图 </el-menu-item></router-link>
             </el-sub-menu>
+            <router-link to="/LargeScreenStyle"> <el-menu-item>部分样式示例 </el-menu-item></router-link>
           </el-menu>
         </el-scrollbar>
       </el-aside>

@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/Home.vue'
 import HistogramChart from '../views/histogramChart/index.vue'
+import LargeScreenStyle from '../views/largeScreenStyle/index.vue'
 import LineChart from '../views/lineChart/index.vue'
 import PieChart from '../views/pieChart/index.vue'
 
@@ -24,6 +25,11 @@ const routes = [
     path: '/pieChart',
     name: 'PieChart',
     component: PieChart
+  },
+  {
+    path: '/largeScreenStyle',
+    name: 'LargeScreenStyle',
+    component: LargeScreenStyle
   }
 ]
 
