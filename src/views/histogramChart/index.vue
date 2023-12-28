@@ -3,7 +3,7 @@ import { Histogram } from '@element-plus/icons-vue'
 import axios from 'axios'
 import { ECharts } from 'echarts'
 import { onMounted, ref } from 'vue'
-import type { ChartProps, hisDataFourType, hisDataOneType, hisDataThreeType, hisDataTwoType, hisDataFiveType } from '../../types/chart'
+import type { ChartProps, hisDataFiveType, hisDataFourType, hisDataOneType, hisDataThreeType, hisDataTwoType } from '../../types/chart'
 import Chart1 from './components/chart1.vue'
 import Chart2 from './components/chart2.vue'
 import Chart3 from './components/chart3.vue'
@@ -83,6 +83,8 @@ const eventData = (e: any) => {
               <span style="color: red">{{ eventName }}</span>
               <span>：</span>
               <span style="color: red">{{ eventId }}</span>
+              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span style="font-weight: 550">柱子，横坐标都可点击进行下钻，横坐标点击下钻后下钻数据带有总数统计</span>
             </div>
             <div class="chart">
               <Chart1 ref="Chart1Ref" @event-data="eventData" />

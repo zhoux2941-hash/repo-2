@@ -1,5 +1,5 @@
 <template>
-  <!-- 在场数量 -->
+  <!-- 立体柱状图 -->
   <div id="numberChart" class="echarts"></div>
 </template>
 
@@ -103,7 +103,7 @@ const initChart = (data: any): echarts.ECharts => {
     },
     yAxis: {
       type: 'value',
-      name: '在场数量',
+      name: '立体柱状图示例',
       nameTextStyle: {
         color: '#000',
         fontSize: 13
