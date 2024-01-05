@@ -48,8 +48,9 @@ const hisDataFour = ref<hisDataFourType>()
 const hisDataFive = ref<hisDataFiveType>()
 onMounted(async () => {
   const hisDataRes = await axios.get('src/assets/json/hisData.json')
-  console.log(hisDataRes)
-  hisDataOne.value = hisDataRes.data.hisDataOne
+  // console.log(hisDataRes)
+  // hisDataOne.value = hisDataRes.data.hisDataOne
+  hisDataOne.value = hisDataRes.data.data
   hisDataTwo.value = hisDataRes.data.hisDataTwo
   hisDataThree.value = hisDataRes.data.hisDataThree
   hisDataFour.value = hisDataRes.data.hisDataFour.data

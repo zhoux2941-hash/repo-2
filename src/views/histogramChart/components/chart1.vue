@@ -7,32 +7,10 @@
 import * as echarts from 'echarts'
 import { debounce } from '../../../utils/funtion'
 
-interface DataItem {
-  value: number
-  name: string
-  id: string
-}
 const emit = defineEmits(['eventData'])
 
 const initChart = (hrData: any): echarts.ECharts => {
-  // console.log(hrData)
-
-  // 用于堆叠柱状图显示多个柱子总数
-  //        如看到代码后有更好优化，望及时指出
-  let list: any = []
-  list = hrData.title.map((item: any) => {
-    return {
-      name: item,
-      value: 0
-    }
-  })
-  for (let i = 0; i < list.length; i++) {
-    let sum = 0
-    if (hrData.aData[i].name === hrData.bData[i].name) {
-      sum = hrData.aData[i].value + hrData.bData[i].value
-      list[i].value = sum
-    }
-  }
+  console.log('柱状图示例', hrData)
 
   const charEle = document.getElementById('hrUnitChart') as HTMLElement
   const charEch: echarts.ECharts = echarts.init(charEle)
@@ -66,7 +44,9 @@ const initChart = (hrData: any): echarts.ECharts => {
     xAxis: [
       {
         type: 'category',
-        data: hrData.title,
+        data: hrData.map((item: any) => {
+          return item.name
+        }),
         triggerEvent: true,
         // 坐标轴
         axisLine: {
@@ -80,14 +60,7 @@ const initChart = (hrData: any): echarts.ECharts => {
           show: false
         },
         // 横坐标文字显示方式
-        axisLabel: {
-          // formatter: function (value: any) {
-          //   if (value.length > 4) {
-          //     return value.substring(0, 4) + '...'
-          //   }
-          //   return value
-          // }
-        }
+        axisLabel: {}
       }
     ],
     yAxis: [
@@ -96,39 +69,11 @@ const initChart = (hrData: any): echarts.ECharts => {
         type: 'value'
       }
     ],
-    // 滚动条
-    dataZoom: [
-      {
-        type: 'slider',
-        show: true,
-        xAxisIndex: [0],
-        handleSize: 0, //滑动条的 左右2个滑动条的大小
-        height: 5, //组件高度
-        bottom: 0, //右边的距离
-        borderColor: '#74838e', //滚动条边框颜色
-        fillerColor: '#3286e9', //滑块颜色
-        backgroundColor: '#74838e', //两边未选中的滑动条区域的颜色
-        showDataShadow: false, //是否显示数据阴影 默认auto
-        showDetail: false, //即拖拽时候是否显示详细数值信息 默认true
-        realtime: true, //是否实时更新
-        zlevel: -10,
-        endValue: 11 // 一次性展示多少个
-      },
-      //以下重点： 让鼠标滚动从缩放变成移动
-      {
-        type: 'inside',
-        xAxisIndex: [0],
-        zoomOnMouseWheel: false, //滚轮不触发缩放
-        moveOnMouseMove: true, //鼠标移动触发平移
-        moveOnMouseWheel: true //鼠标滚轮触发平移
-      }
-    ],
     animationDurationUpdate: 500,
     series: [
       {
         name: 'A级',
         type: 'bar',
-        stack: 'HR',
         barWidth: 24,
         itemStyle: {
           // 柱子形状颜色
@@ -151,7 +96,9 @@ const initChart = (hrData: any): echarts.ECharts => {
             ]
           }
         },
-        data: hrData.aData,
+        data: hrData.map((item: any) => {
+          return item.bar1
+        }),
         universalTransition: {
           enabled: true,
           divideShape: 'clone'
@@ -160,7 +107,7 @@ const initChart = (hrData: any): echarts.ECharts => {
       {
         name: 'B级',
         type: 'bar',
-        stack: 'HR',
+        barWidth: 24,
         itemStyle: {
           // 柱子形状颜色
           borderRadius: [5, 5, 0, 0],
@@ -182,26 +129,42 @@ const initChart = (hrData: any): echarts.ECharts => {
             ]
           }
         },
-        // 用来显示柱子上的数值
-        label: {
-          show: true,
-          position: 'top',
-          color: '#000',
-          fontSize: 14,
-          formatter: function (params: any) {
-            let value: any = ''
-            // 判断是否为父级
-            if (typeof params.data !== 'number') {
-              list.forEach((item: any) => {
-                if (item.name === params.name) {
-                  value = item.value
-                }
-              })
-            }
-            return value
+        data: hrData.map((item: any) => {
+          return item.bar2
+        }),
+        universalTransition: {
+          enabled: true,
+          divideShape: 'clone'
+        }
+      },
+      {
+        name: 'C级',
+        type: 'bar',
+        barWidth: 24,
+        itemStyle: {
+          // 柱子形状颜色
+          borderRadius: [5, 5, 0, 0],
+          color: {
+            type: 'linear',
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              {
+                offset: 0,
+                color: '#dedd4d' // 起始颜色
+              },
+              {
+                offset: 1,
+                color: '#c3944d' // 结束颜色
+              }
+            ]
           }
         },
-        data: hrData.bData,
+        data: hrData.map((item: any) => {
+          return item.bar3
+        }),
         universalTransition: {
           enabled: true,
           divideShape: 'clone'
@@ -224,285 +187,355 @@ const initChart = (hrData: any): echarts.ECharts => {
   charEch.on('click', debounce(onClick, 500))
 
   function onClick(event: any) {
-    if (event.componentType === 'xAxis') {
-      // 筛选子级
-      var subData = hrData.aData.find(function (data: any) {
-        return data.name === event.value
-      })
-      if (!subData) {
-        return
-      }
-      var subData2 = hrData.bData.find(function (data: any) {
-        return data.name === event.value
-      })
-      if (!subData2) {
-        return
-      }
+    console.log(event)
+    const parentData = JSON.parse(JSON.stringify(hrData))
+    // event.name
+    const arr = parentData.filter((item: any) => {
+      return item.name === event.name
+    })
+    console.log(arr[0].children)
+    const childrenData = arr[0].children
 
-      // 将数据传给父组件
-      const eventData = subData
-      emit('eventData', eventData)
-
-      let onClickList: any = []
-      onClickList = subData.data.map((item: any) => {
-        let obj = {}
-        obj = JSON.parse(JSON.stringify(item))
-        return {
-          name: Object.keys(obj)[0],
-          value: 0
-        }
-      })
-      for (let i = 0; i < onClickList.length; i++) {
-        let sum = 0
-        if (subData.data[i].name === subData2.data[i].name) {
-          let subSum: any = Object.values(subData.data[i])[0]
-          let sub2Sum: any = Object.values(subData2.data[i])[0]
-          sum = subSum + sub2Sum
-          onClickList[i].value = sum
-        }
-      }
-
-      charEch.setOption<echarts.EChartsOption>({
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow'
-          },
-          backgroundColor: 'rgba(12, 51, 115,0.8)',
-          borderColor: 'rgba(3, 11, 44, 0.5)',
-          textStyle: {
-            color: 'rgba(255, 255, 255, 1)'
-          }
+    charEch.setOption<echarts.EChartsOption>({
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
         },
-        xAxis: {
-          data: subData.data.map(function (item: any) {
-            return Object.keys(item)[0]
+        backgroundColor: 'rgba(12, 51, 115,0.8)',
+        borderColor: 'rgba(3, 11, 44, 0.5)',
+        textStyle: {
+          color: 'rgba(255, 255, 255, 1)'
+        }
+      },
+      xAxis: {
+        data: childrenData.map((item: any) => {
+          return item.name
+        })
+      },
+      series: [
+        {
+          name: 'A级',
+          type: 'bar',
+          barWidth: 22,
+          data: childrenData.map((item: any) => {
+            return item.bar1
           })
         },
-        // 滚动条
-        dataZoom: [
-          {
-            type: 'slider',
-            show: true,
-            xAxisIndex: [0],
-            handleSize: 0, //滑动条的 左右2个滑动条的大小
-            height: 5, //组件高度
-            bottom: 0, //右边的距离
-            borderColor: '#74838e', //滚动条边框颜色
-            fillerColor: '#3286e9', //滑块颜色
-            backgroundColor: '#74838e', //两边未选中的滑动条区域的颜色
-            showDataShadow: false, //是否显示数据阴影 默认auto
-            showDetail: false, //即拖拽时候是否显示详细数值信息 默认true
-            realtime: true, //是否实时更新
-            // filterMode: 'filter',
-            zlevel: -10,
-            endValue: 11 // 一次性展示多少个
-          },
-          //以下重点： 让鼠标滚动从缩放变成移动
-          {
-            type: 'inside',
-            xAxisIndex: [0],
-            zoomOnMouseWheel: false, //滚轮不触发缩放
-            moveOnMouseMove: true, //鼠标移动触发平移
-            moveOnMouseWheel: true //鼠标滚轮触发平移
-          }
-        ],
-        series: [
-          {
-            name: 'A级',
-            type: 'bar',
-            stack: 'HR',
-            barWidth: 22,
-            data: subData.data.map(function (item: any) {
-              return item[Object.keys(item)[0]]
-            })
-          },
-          {
-            name: 'B级',
-            type: 'bar',
-            stack: 'HR',
-            data: subData2.data.map(function (item: any) {
-              return item[Object.keys(item)[0]]
-            }),
-            label: {
-              show: true,
-              position: 'top',
-              color: '#000',
-              fontSize: 14,
-              formatter: function (params: any) {
-                let value: any = ''
-                onClickList.forEach((item: any) => {
-                  if (item.name === params.name) {
-                    value = item.value
-                  }
-                })
-                return value
-              }
-            }
-          }
-        ],
-        // 返回字样出现
-        graphic: [
-          {
-            type: 'text',
-            left: 20,
-            top: 10,
-            style: {
-              text: '返回',
-              fontSize: 12,
-              fill: '#000'
-            },
-            onclick: function () {
-              charEch.setOption<echarts.EChartsOption>(option)
-            }
-          }
-        ]
-      })
-    } else if (event.componentType === 'series') {
-      if (event.data) {
-        // 筛选子级
-        var subData = hrData.aData.find(function (data: any) {
-          return data.name === (event.data as DataItem).name
-        })
-        if (!subData) {
-          return
+        {
+          name: 'B级',
+          type: 'bar',
+          barWidth: 22,
+          data: childrenData.map((item: any) => {
+            return item.bar2
+          })
+        },
+        {
+          name: 'C级',
+          type: 'bar',
+          barWidth: 22,
+          data: childrenData.map((item: any) => {
+            return item.bar3
+          })
         }
-        var subData2 = hrData.bData.find(function (data: any) {
-          return data.name === (event.data as DataItem).name
-        })
-        if (!subData2) {
-          return
-        }
-
-        // 将数据传给父组件
-        const eventData = event.data
-        emit('eventData', eventData)
-
-        // 处理下钻显示总数
-        let onClickList: any = []
-        onClickList = subData.data.map((item: any) => {
-          let obj = {}
-          obj = JSON.parse(JSON.stringify(item))
-          return {
-            name: Object.keys(obj)[0],
-            value: 0
-          }
-        })
-        for (let i = 0; i < onClickList.length; i++) {
-          let sum = 0
-          if (subData.data[i].name === subData2.data[i].name) {
-            let subSum: any = Object.values(subData.data[i])[0]
-            let sub2Sum: any = Object.values(subData2.data[i])[0]
-            sum = subSum + sub2Sum
-            onClickList[i].value = sum
+      ],
+      // 返回字样出现
+      graphic: [
+        {
+          type: 'text',
+          left: 20,
+          top: 10,
+          style: {
+            text: '返回',
+            fontSize: 12,
+            fill: '#000'
+          },
+          onclick: function () {
+            charEch.setOption<echarts.EChartsOption>(option)
           }
         }
+      ]
+    })
 
-        charEch.setOption<echarts.EChartsOption>({
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'shadow'
-            },
-            backgroundColor: 'rgba(12, 51, 115,0.8)',
-            borderColor: 'rgba(3, 11, 44, 0.5)',
-            textStyle: {
-              color: 'rgba(255, 255, 255, 1)'
-            }
-          },
-          xAxis: {
-            data: subData.data.map(function (item: any) {
-              return Object.keys(item)[0]
-            })
-          },
-          // 滚动条
-          dataZoom: [
-            {
-              type: 'slider',
-              show: true,
-              xAxisIndex: [0],
-              handleSize: 0, //滑动条的 左右2个滑动条的大小
-              height: 5, //组件高度
-              bottom: 0, //右边的距离
-              borderColor: '#74838e', //滚动条边框颜色
-              fillerColor: '#3286e9', //滑块颜色
-              backgroundColor: '#74838e', //两边未选中的滑动条区域的颜色
-              showDataShadow: false, //是否显示数据阴影 默认auto
-              showDetail: false, //即拖拽时候是否显示详细数值信息 默认true
-              realtime: true, //是否实时更新
-              // filterMode: 'filter',
-              zlevel: -10,
-              endValue: 11 // 一次性展示多少个
-            },
-            //以下重点： 让鼠标滚动从缩放变成移动
-            {
-              type: 'inside',
-              xAxisIndex: [0],
-              zoomOnMouseWheel: false, //滚轮不触发缩放
-              moveOnMouseMove: true, //鼠标移动触发平移
-              moveOnMouseWheel: true //鼠标滚轮触发平移
-            }
-          ],
-          series: [
-            {
-              name: 'A级',
-              type: 'bar',
-              stack: 'HR',
-              barWidth: 22,
-              data: subData.data.map(function (item: any) {
-                return item[Object.keys(item)[0]]
-              })
-            },
-            {
-              name: 'B级',
-              type: 'bar',
-              stack: 'HR',
-              data: subData2.data.map(function (item: any) {
-                return item[Object.keys(item)[0]]
-              }),
-              // 用来显示柱子上的数值
-              label: {
-                show: true,
-                position: 'top',
-                color: '#000',
-                fontSize: 14,
-                formatter: function (params: any) {
-                  let value: any = ''
-                  // 判断是否为父级
-                  if (typeof params.data !== 'number') {
-                    list.forEach((item: any) => {
-                      if (item.name === params.name) {
-                        value = item.value
-                      }
-                    })
-                  }
-                  return value
-                }
-              }
-            }
-          ],
-          // 返回字样出现
-          graphic: [
-            {
-              type: 'text',
-              left: 20,
-              top: 10,
-              style: {
-                text: '返回',
-                fontSize: 12,
-                fill: '#000'
-              },
-              onclick: function () {
-                charEch.setOption<echarts.EChartsOption>(option)
-              }
-            }
-          ]
-        })
-      }
-    } else {
-      const eventData = { name: '示例name', id: 'ID' }
-      emit('eventData', eventData)
-    }
+    // if (event.componentType === 'xAxis') {
+    //   // 筛选子级
+    //   var subData = hrData.aData.find(function (data: any) {
+    //     return data.name === event.value
+    //   })
+    //   if (!subData) {
+    //     return
+    //   }
+    //   var subData2 = hrData.bData.find(function (data: any) {
+    //     return data.name === event.value
+    //   })
+    //   if (!subData2) {
+    //     return
+    //   }
+
+    //   // 将数据传给父组件
+    //   const eventData = subData
+    //   emit('eventData', eventData)
+
+    //   let onClickList: any = []
+    //   onClickList = subData.data.map((item: any) => {
+    //     let obj = {}
+    //     obj = JSON.parse(JSON.stringify(item))
+    //     return {
+    //       name: Object.keys(obj)[0],
+    //       value: 0
+    //     }
+    //   })
+    //   for (let i = 0; i < onClickList.length; i++) {
+    //     let sum = 0
+    //     if (subData.data[i].name === subData2.data[i].name) {
+    //       let subSum: any = Object.values(subData.data[i])[0]
+    //       let sub2Sum: any = Object.values(subData2.data[i])[0]
+    //       sum = subSum + sub2Sum
+    //       onClickList[i].value = sum
+    //     }
+    //   }
+
+    //   charEch.setOption<echarts.EChartsOption>({
+    //     tooltip: {
+    //       trigger: 'axis',
+    //       axisPointer: {
+    //         type: 'shadow'
+    //       },
+    //       backgroundColor: 'rgba(12, 51, 115,0.8)',
+    //       borderColor: 'rgba(3, 11, 44, 0.5)',
+    //       textStyle: {
+    //         color: 'rgba(255, 255, 255, 1)'
+    //       }
+    //     },
+    //     xAxis: {
+    //       data: subData.data.map(function (item: any) {
+    //         return Object.keys(item)[0]
+    //       })
+    //     },
+    //     // 滚动条
+    //     dataZoom: [
+    //       {
+    //         type: 'slider',
+    //         show: true,
+    //         xAxisIndex: [0],
+    //         handleSize: 0, //滑动条的 左右2个滑动条的大小
+    //         height: 5, //组件高度
+    //         bottom: 0, //右边的距离
+    //         borderColor: '#74838e', //滚动条边框颜色
+    //         fillerColor: '#3286e9', //滑块颜色
+    //         backgroundColor: '#74838e', //两边未选中的滑动条区域的颜色
+    //         showDataShadow: false, //是否显示数据阴影 默认auto
+    //         showDetail: false, //即拖拽时候是否显示详细数值信息 默认true
+    //         realtime: true, //是否实时更新
+    //         // filterMode: 'filter',
+    //         zlevel: -10,
+    //         endValue: 11 // 一次性展示多少个
+    //       },
+    //       //以下重点： 让鼠标滚动从缩放变成移动
+    //       {
+    //         type: 'inside',
+    //         xAxisIndex: [0],
+    //         zoomOnMouseWheel: false, //滚轮不触发缩放
+    //         moveOnMouseMove: true, //鼠标移动触发平移
+    //         moveOnMouseWheel: true //鼠标滚轮触发平移
+    //       }
+    //     ],
+    //     series: [
+    //       {
+    //         name: 'A级',
+    //         type: 'bar',
+    //         stack: 'HR',
+    //         barWidth: 22,
+    //         data: subData.data.map(function (item: any) {
+    //           return item[Object.keys(item)[0]]
+    //         })
+    //       },
+    //       {
+    //         name: 'B级',
+    //         type: 'bar',
+    //         stack: 'HR',
+    //         data: subData2.data.map(function (item: any) {
+    //           return item[Object.keys(item)[0]]
+    //         }),
+    //         label: {
+    //           show: true,
+    //           position: 'top',
+    //           color: '#000',
+    //           fontSize: 14,
+    //           formatter: function (params: any) {
+    //             let value: any = ''
+    //             onClickList.forEach((item: any) => {
+    //               if (item.name === params.name) {
+    //                 value = item.value
+    //               }
+    //             })
+    //             return value
+    //           }
+    //         }
+    //       }
+    //     ],
+    //     // 返回字样出现
+    //     graphic: [
+    //       {
+    //         type: 'text',
+    //         left: 20,
+    //         top: 10,
+    //         style: {
+    //           text: '返回',
+    //           fontSize: 12,
+    //           fill: '#000'
+    //         },
+    //         onclick: function () {
+    //           charEch.setOption<echarts.EChartsOption>(option)
+    //         }
+    //       }
+    //     ]
+    //   })
+    // } else if (event.componentType === 'series') {
+    //   if (event.data) {
+    //     // 筛选子级
+    //     var subData = hrData.aData.find(function (data: any) {
+    //       return data.name === (event.data as DataItem).name
+    //     })
+    //     if (!subData) {
+    //       return
+    //     }
+    //     var subData2 = hrData.bData.find(function (data: any) {
+    //       return data.name === (event.data as DataItem).name
+    //     })
+    //     if (!subData2) {
+    //       return
+    //     }
+
+    //     // 将数据传给父组件
+    //     const eventData = event.data
+    //     emit('eventData', eventData)
+
+    //     // 处理下钻显示总数
+    //     let onClickList: any = []
+    //     onClickList = subData.data.map((item: any) => {
+    //       let obj = {}
+    //       obj = JSON.parse(JSON.stringify(item))
+    //       return {
+    //         name: Object.keys(obj)[0],
+    //         value: 0
+    //       }
+    //     })
+    //     for (let i = 0; i < onClickList.length; i++) {
+    //       let sum = 0
+    //       if (subData.data[i].name === subData2.data[i].name) {
+    //         let subSum: any = Object.values(subData.data[i])[0]
+    //         let sub2Sum: any = Object.values(subData2.data[i])[0]
+    //         sum = subSum + sub2Sum
+    //         onClickList[i].value = sum
+    //       }
+    //     }
+
+    //     charEch.setOption<echarts.EChartsOption>({
+    //       tooltip: {
+    //         trigger: 'axis',
+    //         axisPointer: {
+    //           type: 'shadow'
+    //         },
+    //         backgroundColor: 'rgba(12, 51, 115,0.8)',
+    //         borderColor: 'rgba(3, 11, 44, 0.5)',
+    //         textStyle: {
+    //           color: 'rgba(255, 255, 255, 1)'
+    //         }
+    //       },
+    //       xAxis: {
+    //         data: subData.data.map(function (item: any) {
+    //           return Object.keys(item)[0]
+    //         })
+    //       },
+    //       // 滚动条
+    //       dataZoom: [
+    //         {
+    //           type: 'slider',
+    //           show: true,
+    //           xAxisIndex: [0],
+    //           handleSize: 0, //滑动条的 左右2个滑动条的大小
+    //           height: 5, //组件高度
+    //           bottom: 0, //右边的距离
+    //           borderColor: '#74838e', //滚动条边框颜色
+    //           fillerColor: '#3286e9', //滑块颜色
+    //           backgroundColor: '#74838e', //两边未选中的滑动条区域的颜色
+    //           showDataShadow: false, //是否显示数据阴影 默认auto
+    //           showDetail: false, //即拖拽时候是否显示详细数值信息 默认true
+    //           realtime: true, //是否实时更新
+    //           // filterMode: 'filter',
+    //           zlevel: -10,
+    //           endValue: 11 // 一次性展示多少个
+    //         },
+    //         //以下重点： 让鼠标滚动从缩放变成移动
+    //         {
+    //           type: 'inside',
+    //           xAxisIndex: [0],
+    //           zoomOnMouseWheel: false, //滚轮不触发缩放
+    //           moveOnMouseMove: true, //鼠标移动触发平移
+    //           moveOnMouseWheel: true //鼠标滚轮触发平移
+    //         }
+    //       ],
+    //       series: [
+    //         {
+    //           name: 'A级',
+    //           type: 'bar',
+    //           stack: 'HR',
+    //           barWidth: 22,
+    //           data: subData.data.map(function (item: any) {
+    //             return item[Object.keys(item)[0]]
+    //           })
+    //         },
+    //         {
+    //           name: 'B级',
+    //           type: 'bar',
+    //           stack: 'HR',
+    //           data: subData2.data.map(function (item: any) {
+    //             return item[Object.keys(item)[0]]
+    //           }),
+    //           // 用来显示柱子上的数值
+    //           label: {
+    //             show: true,
+    //             position: 'top',
+    //             color: '#000',
+    //             fontSize: 14,
+    //             formatter: function (params: any) {
+    //               let value: any = ''
+    //               // 判断是否为父级
+    //               if (typeof params.data !== 'number') {
+    //                 list.forEach((item: any) => {
+    //                   if (item.name === params.name) {
+    //                     value = item.value
+    //                   }
+    //                 })
+    //               }
+    //               return value
+    //             }
+    //           }
+    //         }
+    //       ],
+    //       // 返回字样出现
+    //       graphic: [
+    //         {
+    //           type: 'text',
+    //           left: 20,
+    //           top: 10,
+    //           style: {
+    //             text: '返回',
+    //             fontSize: 12,
+    //             fill: '#000'
+    //           },
+    //           onclick: function () {
+    //             charEch.setOption<echarts.EChartsOption>(option)
+    //           }
+    //         }
+    //       ]
+    //     })
+    //   }
+    // } else {
+    //   const eventData = { name: '示例name', id: 'ID' }
+    //   emit('eventData', eventData)
+    // }
   }
   charEch.setOption(option)
   return charEch

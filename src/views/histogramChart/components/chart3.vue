@@ -7,8 +7,6 @@
 import * as echarts from 'echarts'
 
 const initChart = (data: any): echarts.ECharts => {
-  console.log(data)
-
   const charEle = document.getElementById('chart3') as HTMLElement
   const charEch: echarts.ECharts = echarts.init(charEle)
   const option: any = {
