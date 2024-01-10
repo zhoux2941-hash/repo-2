@@ -14,6 +14,14 @@
 
 
 
+## 拷贝代码
+
+git：git clone https://gitee.com/tao-j-l/vue3_e-charts.git
+
+zip（推荐）：点击  克隆/下载  按钮 下载zip
+
+
+
 ## 运行
 
 ```javascript
@@ -24,9 +32,7 @@ npm install
 npm run dev
 ```
 
-
-
-###### 推荐使用 node^ >=18.0.0，npm^ >=8.0.0
+###### 推荐使用   node^ >=18.0.0   npm^ >=8.0.0
 
 
 
@@ -34,6 +40,4 @@ npm run dev
 
 个人首次写一些小东西，还不是很熟练，如果有幸有人可以看到此仓库，可以多多帮忙指出问题~！
 
-个人微信：（微信交流）
-
-![wx](C:%5CUsers%5CTao%20Jialun%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cwx.png)
+个人微信：（微信交流）wx_t2512
