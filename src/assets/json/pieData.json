@@ -1,0 +1,9 @@
+{
+  "pieDataOne": [
+    { "name": "测试一", "value": 10 },
+    { "name": "测试二", "value": 20 },
+    { "name": "测试三", "value": 1 },
+    { "name": "测试四", "value": 4 },
+    { "name": "测试五", "value": 12 }
+  ]
+}

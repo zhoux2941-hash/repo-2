@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { Histogram } from '@element-plus/icons-vue'
-// import axios from 'axios'
+import axios from 'axios'
 import { ECharts } from 'echarts'
 import { onMounted, ref } from 'vue'
 import type { ChartProps } from '../../types/chart'
+import Chart1 from './components/chart1.vue'
+import Chart2 from './components/chart2.vue'
+import Chart3 from './components/chart3.vue'
 
 // 监听到切换页面自动刷新
 window.onresize = function () {
@@ -12,22 +15,35 @@ window.onresize = function () {
 
 const dataScreen: ChartProps = {
   chart1: null,
-  chart2: null
+  chart2: null,
+  chart3: null,
+  chart4: null,
+  chart5: null
 }
 // 获取子组件的ref
 interface ChartExpose {
   initChart: (params: any) => ECharts
 }
 const Chart1Ref = ref<ChartExpose>()
+const Chart2Ref = ref<ChartExpose>()
+const Chart3Ref = ref<ChartExpose>()
+const Chart4Ref = ref<ChartExpose>()
+const Chart5Ref = ref<ChartExpose>()
 // 初始化 charts
 const initCharts = (): void => {
-  dataScreen.chart1 = Chart1Ref.value?.initChart(lineDataOne.value) as ECharts
+  dataScreen.chart1 = Chart1Ref.value?.initChart(pieDataOne.value) as ECharts
+  dataScreen.chart2 = Chart2Ref.value?.initChart(pieDataOne.value) as ECharts
+  dataScreen.chart3 = Chart3Ref.value?.initChart(pieDataOne.value) as ECharts
+  dataScreen.chart4 = Chart4Ref.value?.initChart(pieDataOne.value) as ECharts
+  dataScreen.chart5 = Chart5Ref.value?.initChart(pieDataOne.value) as ECharts
 }
 
 // 初始化 charts参数
-const lineDataOne = ref()
+const pieDataOne = ref()
 onMounted(async () => {
-  // const lineDataRes = await axios.get('src/assets/json/chartsData.json')
+  const pieDataRes = await axios.get('src/assets/json/pieData.json')
+  console.log(pieDataRes)
+  pieDataOne.value = pieDataRes.data.pieDataOne
 
   initCharts()
 })
@@ -41,10 +57,12 @@ onMounted(async () => {
           <el-card shadow="always">
             <el-page-header :icon="Histogram">
               <template #title>
-                <span>基础饼图_荧光色展示</span>
+                <span>基础饼图_边缘发光效果</span>
               </template>
             </el-page-header>
-            <div class="chart"></div>
+            <div class="chart">
+              <Chart1 ref="Chart1Ref" />
+            </div>
           </el-card>
         </el-col>
         <el-col :span="8" style="margin-bottom: 20px">
@@ -54,7 +72,9 @@ onMounted(async () => {
                 <span>南丁格尔玫瑰图</span>
               </template>
             </el-page-header>
-            <div class="chart"></div>
+            <div class="chart">
+              <Chart2 ref="Chart2Ref" />
+            </div>
           </el-card>
         </el-col>
         <el-col :span="8" style="margin-bottom: 20px">
@@ -64,7 +84,9 @@ onMounted(async () => {
                 <span>圆环图</span>
               </template>
             </el-page-header>
-            <div class="chart"></div>
+            <div class="chart">
+              <Chart3 ref="Chart3Ref" />
+            </div>
           </el-card>
         </el-col>
         <el-col :span="24">
