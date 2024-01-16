@@ -17,7 +17,7 @@ const initChart = (data: any): echarts.ECharts => {
       x: 0,
       y: 0
     },
-    buildPath: function (ctx, shape) {
+    buildPath: function (ctx: any, shape: any) {
       // 会canvas的应该都能看得懂，shape是从custom传入的
       const xAxisPoint = shape.xAxisPoint
       // console.log(shape);
@@ -34,7 +34,7 @@ const initChart = (data: any): echarts.ECharts => {
       x: 0,
       y: 0
     },
-    buildPath: function (ctx, shape) {
+    buildPath: function (ctx: any, shape: any) {
       const xAxisPoint = shape.xAxisPoint
       const c1 = [shape.x, shape.y]
       const c2 = [xAxisPoint[0], xAxisPoint[1]]
@@ -49,7 +49,7 @@ const initChart = (data: any): echarts.ECharts => {
       x: 0,
       y: 0
     },
-    buildPath: function (ctx, shape) {
+    buildPath: function (ctx: any, shape: any) {
       const c1 = [shape.x, shape.y]
       const c2 = [shape.x + offsetX, shape.y - offsetY] //右点
       // const c3 = [shape.x, shape.y - offsetX];
@@ -257,7 +257,6 @@ const initChart = (data: any): echarts.ECharts => {
         //     },
         //     fontSize: 14,
         //     color: '#000',
-        //     fontFamily: 'siyuan',
         //     fontWeight: 'bold',
         //     offset: [0, -15]
         //   }

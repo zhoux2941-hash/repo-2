@@ -3,10 +3,12 @@ import { Histogram } from '@element-plus/icons-vue'
 import axios from 'axios'
 import { ECharts } from 'echarts'
 import { onMounted, ref } from 'vue'
-import type { ChartProps } from '../../types/chart'
+import type { ChartProps, pieDataOneType, pieDataThreeType, pieDataTwoType } from '../../types/chart'
 import Chart1 from './components/chart1.vue'
 import Chart2 from './components/chart2.vue'
 import Chart3 from './components/chart3.vue'
+import Chart4 from './components/chart4.vue'
+import Chart5 from './components/chart5.vue'
 
 // 监听到切换页面自动刷新
 window.onresize = function () {
@@ -34,16 +36,20 @@ const initCharts = (): void => {
   dataScreen.chart1 = Chart1Ref.value?.initChart(pieDataOne.value) as ECharts
   dataScreen.chart2 = Chart2Ref.value?.initChart(pieDataOne.value) as ECharts
   dataScreen.chart3 = Chart3Ref.value?.initChart(pieDataOne.value) as ECharts
-  dataScreen.chart4 = Chart4Ref.value?.initChart(pieDataOne.value) as ECharts
-  dataScreen.chart5 = Chart5Ref.value?.initChart(pieDataOne.value) as ECharts
+  dataScreen.chart4 = Chart4Ref.value?.initChart(pieDataThree.value) as ECharts
+  dataScreen.chart5 = Chart5Ref.value?.initChart(pieDataTwo.value) as ECharts
 }
 
 // 初始化 charts参数
-const pieDataOne = ref()
+const pieDataOne = ref<pieDataOneType>()
+const pieDataTwo = ref<pieDataTwoType>()
+const pieDataThree = ref<pieDataThreeType>()
 onMounted(async () => {
   const pieDataRes = await axios.get('src/assets/json/pieData.json')
   console.log(pieDataRes)
   pieDataOne.value = pieDataRes.data.pieDataOne
+  pieDataTwo.value = pieDataRes.data.pieDataTwo
+  pieDataThree.value = pieDataRes.data.pieDataThree
 
   initCharts()
 })
@@ -89,7 +95,7 @@ onMounted(async () => {
             </div>
           </el-card>
         </el-col>
-        <el-col :span="24">
+        <el-col :span="12">
           <el-card shadow="always">
             <el-page-header :icon="Histogram">
               <template #title>
@@ -97,7 +103,19 @@ onMounted(async () => {
               </template>
             </el-page-header>
             <div class="chart">
-              <Chart2 ref="Chart2Ref" />
+              <Chart4 ref="Chart4Ref" />
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card shadow="always">
+            <el-page-header :icon="Histogram">
+              <template #title>
+                <span>靶状图</span>
+              </template>
+            </el-page-header>
+            <div class="chart">
+              <Chart5 ref="Chart5Ref" />
             </div>
           </el-card>
         </el-col>

@@ -52,3 +52,22 @@ export type hisDataFiveType = {
   data: Array<number>
   title: Array<string>
 }
+
+export type pieDataOneType = {
+  name: string
+  value: number
+}
+
+export type pieDataTwoType = {
+  name: Array<string>
+  value: Array<number>
+}
+
+export type pieDataThreeType = {
+  name: string
+  children?: Array<pieDataThreeChildrenType>
+}
+type pieDataThreeChildrenType = {
+  name: string
+  value: number
+}
