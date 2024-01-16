@@ -1,5 +1,5 @@
 <template>
-  <!-- 基础饼图_旭日图 -->
+  <!-- 旭日图 -->
   <div id="chart4" class="echarts"></div>
 </template>
 

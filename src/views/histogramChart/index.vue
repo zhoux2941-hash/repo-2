@@ -9,6 +9,7 @@ import Chart2 from './components/chart2.vue'
 import Chart3 from './components/chart3.vue'
 import Chart4 from './components/chart4.vue'
 import Chart5 from './components/chart5.vue'
+import Chart6 from './components/chart6.vue'
 
 // 监听到切换页面自动刷新
 window.onresize = function () {
@@ -20,7 +21,8 @@ const dataScreen: ChartProps = {
   chart2: null,
   chart3: null,
   chart4: null,
-  chart5: null
+  chart5: null,
+  chart6: null
 }
 // 获取子组件的ref
 interface ChartExpose {
@@ -31,6 +33,7 @@ const Chart2Ref = ref<ChartExpose>()
 const Chart3Ref = ref<ChartExpose>()
 const Chart4Ref = ref<ChartExpose>()
 const Chart5Ref = ref<ChartExpose>()
+const Chart6Ref = ref<ChartExpose>()
 // 初始化 charts
 const initCharts = (): void => {
   dataScreen.chart1 = Chart1Ref.value?.initChart(hisDataOne.value) as ECharts
@@ -38,6 +41,7 @@ const initCharts = (): void => {
   dataScreen.chart3 = Chart3Ref.value?.initChart(hisDataThree.value) as ECharts
   dataScreen.chart4 = Chart4Ref.value?.initChart(hisDataFour.value) as ECharts
   dataScreen.chart5 = Chart5Ref.value?.initChart(hisDataFive.value) as ECharts
+  dataScreen.chart6 = Chart6Ref.value?.initChart(hisDataSix.value.parentArr) as ECharts
 }
 
 // 初始化 charts参数
@@ -46,6 +50,7 @@ const hisDataTwo = ref<hisDataTwoType>()
 const hisDataThree = ref<hisDataThreeType>()
 const hisDataFour = ref<hisDataFourType>()
 const hisDataFive = ref<hisDataFiveType>()
+const hisDataSix = ref<any>()
 onMounted(async () => {
   const hisDataRes = await axios.get('src/assets/json/hisData.json')
   // console.log(hisDataRes)
@@ -55,6 +60,7 @@ onMounted(async () => {
   hisDataThree.value = hisDataRes.data.hisDataThree
   hisDataFour.value = hisDataRes.data.hisDataFour.data
   hisDataFive.value = hisDataRes.data.hisDataFive
+  hisDataSix.value = hisDataRes.data.hisDataSix
 
   initCharts()
 })
@@ -65,6 +71,19 @@ const eventId = ref('ID')
 const eventData = (e: any) => {
   eventName.value = e.name
   eventId.value = e.id
+}
+// 下钻进行处理
+const isChart = ref(false)
+const emitClick = () => {
+  // 销毁原图表
+  dataScreen.chart6?.dispose()
+  dataScreen.chart6 = Chart6Ref.value?.initChart(hisDataSix.value.childrenArr) as ECharts
+  isChart.value = !isChart.value
+}
+const handleClick = () => {
+  dataScreen.chart6?.dispose()
+  dataScreen.chart6 = Chart6Ref.value?.initChart(hisDataSix.value.parentArr) as ECharts
+  isChart.value = !isChart.value
 }
 </script>
 
@@ -137,6 +156,21 @@ const eventData = (e: any) => {
             </el-page-header>
             <div class="chart">
               <Chart5 ref="Chart5Ref" />
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="24" style="margin-bottom: 20px">
+          <el-card shadow="always">
+            <el-page-header :icon="Histogram">
+              <template #title>
+                <span>下钻折线柱状图</span>
+              </template>
+              <div>
+                <span v-show="isChart" @click="handleClick">返回父级</span>
+              </div>
+            </el-page-header>
+            <div class="chart">
+              <Chart6 ref="Chart6Ref" @emitClick="emitClick" />
             </div>
           </el-card>
         </el-col>

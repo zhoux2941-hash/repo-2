@@ -1,5 +1,5 @@
 <template>
-  <!-- 基础饼图_旭日图 -->
+  <!-- 靶状图 -->
   <div id="chart5" class="echarts"></div>
 </template>
 
@@ -7,9 +7,57 @@
 import * as echarts from 'echarts'
 
 const initChart = (data: any): echarts.ECharts => {
+  // 计算总数，利用总数，进行百分比值在图形展示
   let num = 0
   for (let i = 0; i < data.value.length; i++) {
     num += data.value[i]
+  }
+
+  // 图表内容计算函数
+  /* { name:标题 , radius:[内圆直径,外圆直径] ,startAngle:起始圆心角  value:数据 ,  color1: 颜色, color2: 颜色 } */
+  const getItem = (data: any) => {
+    return {
+      name: '靶状图示例',
+      type: 'pie',
+      center: ['40%', '50%'],
+      radius: data.radius,
+      // startAngle: data.startAngle,
+      // avoidLabelOverlap: false,
+      labelLine: {
+        show: false
+      },
+      label: {
+        show: false
+      },
+      data: [
+        {
+          value: data.value,
+          name: data.name,
+          itemStyle: {
+            // 渐变颜色
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: data.color1
+              },
+              {
+                offset: 1,
+                color: data.color2
+              }
+            ])
+          }
+        },
+        {
+          value: 100 - (data.value / num) * 100,
+          name: data.name, //设置name防止legend错位
+          itemStyle: {
+            // 颜色设置为none,则该片段不渲染
+            color: 'none'
+          },
+          label: { show: false }
+        }
+      ]
+    }
   }
 
   const charEle = document.getElementById('chart5') as HTMLElement
@@ -27,6 +75,7 @@ const initChart = (data: any): echarts.ECharts => {
         color: 'rgba(255, 255, 255, 1)'
       }
     },
+    // 2.布局位置
     grid: {
       left: '5%',
       right: '5%',
@@ -34,7 +83,7 @@ const initChart = (data: any): echarts.ECharts => {
       top: '5%',
       containLabel: true
     },
-    // 2.图例组件
+    // 3.图例组件
     legend: {
       orient: 'vertical', // 设置图例竖排显示
       top: '0%',
@@ -50,7 +99,7 @@ const initChart = (data: any): echarts.ECharts => {
         fontSize: 14
       }
     },
-    // 3.图表内容
+    // 4.图表内容
     series: [
       getItem({
         name: data.name[0],
@@ -117,52 +166,6 @@ const initChart = (data: any): echarts.ECharts => {
         color2: '#7e87fb'
       })
     ]
-  }
-
-  /* { name:标题 , radius:[内圆直径,外圆直径] ,startAngle:起始圆心角  value:数据 ,  color1: 颜色, color2: 颜色 } */
-  function getItem(data: any) {
-    return {
-      name: '靶状图示例',
-      type: 'pie',
-      center: ['40%', '50%'],
-      radius: data.radius,
-      // startAngle: data.startAngle,
-      // avoidLabelOverlap: false,
-      labelLine: {
-        show: false
-      },
-      label: {
-        show: false
-      },
-      data: [
-        {
-          value: data.value,
-          name: data.name,
-          itemStyle: {
-            // 渐变颜色
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: data.color1
-              },
-              {
-                offset: 1,
-                color: data.color2
-              }
-            ])
-          }
-        },
-        {
-          value: 100 - (data.value / num) * 100,
-          name: data.name, //设置name防止legend错位
-          itemStyle: {
-            // 颜色设置为none,则该片段不渲染
-            color: 'none'
-          },
-          label: { show: false }
-        }
-      ]
-    }
   }
 
   charEch.setOption(option)

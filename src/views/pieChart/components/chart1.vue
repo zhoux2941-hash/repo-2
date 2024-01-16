@@ -6,7 +6,9 @@
 <script setup lang="ts">
 import * as echarts from 'echarts'
 
-let color = ['#00ffff', '#409B5C', '#ffe000', '#1c68c5', '#ffa800', '#ff5b00', '#5fdeff', '#ffa801', '#f2d15c', '#ff3120', '#fefefe', '#afa801', '#fe5b10', '#fd3120']
+// 颜色数组
+const color: string[] = ['#00ffff', '#409B5C', '#ffe000', '#1c68c5', '#ffa800', '#ff5b00', '#5fdeff', '#ffa801', '#f2d15c', '#ff3120', '#fefefe', '#afa801', '#fe5b10', '#fd3120']
+
 const initChart = (data: any): echarts.ECharts => {
   const charEle = document.getElementById('chart1') as HTMLElement
   const charEch: echarts.ECharts = echarts.init(charEle)
