@@ -14,6 +14,10 @@
               <router-link to="/histogramChart"> <el-menu-item>柱状图 </el-menu-item></router-link>
               <router-link to="/pieChart"> <el-menu-item>饼图 </el-menu-item></router-link>
             </el-sub-menu>
+            <el-sub-menu index="2">
+              <template #title>地图展示</template>
+              <router-link to="/mapChart"> <el-menu-item>echarts地图展示 </el-menu-item></router-link>
+            </el-sub-menu>
             <router-link to="/LargeScreenStyle"> <el-menu-item>部分样式示例 </el-menu-item></router-link>
           </el-menu>
         </el-scrollbar>

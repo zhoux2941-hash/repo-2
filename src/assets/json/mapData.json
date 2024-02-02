@@ -1,0 +1,74 @@
+{
+  "data": [
+    {
+      "name": "黑龙江省",
+      "value": 1,
+      "value1": "东北"
+    },
+    {
+      "name": "吉林省",
+      "value": 1,
+      "value1": "东北"
+    },
+    {
+      "name": "辽宁省",
+      "value": 1,
+      "value1": "东北"
+    },
+    {
+      "name": "北京市",
+      "value": 2,
+      "value1": "华北"
+    },
+    {
+      "name": "天津市",
+      "value": 2,
+      "value1": "华北"
+    },
+    {
+      "name": "河北省",
+      "value": 2,
+      "value1": "华北"
+    },
+    {
+      "name": "河南省",
+      "value": 4,
+      "value1": "华中"
+    },
+    {
+      "name": "湖北省",
+      "value": 4,
+      "value1": "华中"
+    },
+    {
+      "name": "广东省",
+      "value": 5,
+      "value1": "华南"
+    },
+    {
+      "name": "海南省",
+      "value": 5,
+      "value1": "华南"
+    },
+    {
+      "name": "上海市",
+      "value": 3,
+      "value1": "华东"
+    },
+    {
+      "name": "浙江省",
+      "value": 3,
+      "value1": "华东"
+    },
+    {
+      "name": "西藏自治区",
+      "value": 6,
+      "value1": "西南"
+    },
+    {
+      "name": "甘肃省",
+      "value": 7,
+      "value1": "西北"
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import HomeView from '../views/Home.vue'
 import HistogramChart from '../views/histogramChart/index.vue'
 import LargeScreenStyle from '../views/largeScreenStyle/index.vue'
 import LineChart from '../views/lineChart/index.vue'
+import MapChart from '../views/mapChart/index.vue'
 import PieChart from '../views/pieChart/index.vue'
 
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
     path: '/pieChart',
     name: 'PieChart',
     component: PieChart
+  },
+  {
+    path: '/mapChart',
+    name: 'MapChart',
+    component: MapChart
   },
   {
     path: '/largeScreenStyle',
