@@ -6,7 +6,7 @@
       <el-aside width="200px">
         <el-scrollbar>
           <h2 class="home_title">可视化图表</h2>
-          <el-menu :default-openeds="['1']">
+          <el-menu>
             <router-link to="/"> <el-menu-item>导航台 </el-menu-item></router-link>
             <el-sub-menu index="1">
               <template #title>图表</template>
@@ -17,6 +17,7 @@
             <el-sub-menu index="2">
               <template #title>地图展示</template>
               <router-link to="/mapChart"> <el-menu-item>echarts地图展示 </el-menu-item></router-link>
+              <router-link to="/worldMap"> <el-menu-item>世界地图 </el-menu-item></router-link>
             </el-sub-menu>
             <router-link to="/LargeScreenStyle"> <el-menu-item>部分样式示例 </el-menu-item></router-link>
           </el-menu>
