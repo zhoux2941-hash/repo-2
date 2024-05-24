@@ -59,7 +59,7 @@ const initChart = (mapData: any): echarts.ECharts => {
       },
       roam: true,
       itemStyle: {
-        areaColor: "rgba(9, 53, 127,1)",
+        areaColor: "rgba(75, 116, 241,1)",
         borderColor: "#B0E0E6",
         shadowColor: "#47cbfc",
         shadowOffsetY: 0,
