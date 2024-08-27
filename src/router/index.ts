@@ -8,44 +8,44 @@ import WorldMap from '../views/worldMap/index.vue'
 import PieChart from '../views/pieChart/index.vue'
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: HomeView
-  },
-  {
-    path: '/lineChart',
-    name: 'LineChart',
-    component: LineChart
-  },
-  {
-    path: '/histogramChart',
-    name: 'HistogramChart',
-    component: HistogramChart
-  },
-  {
-    path: '/pieChart',
-    name: 'PieChart',
-    component: PieChart
-  },
-  {
-    path: '/mapChart',
-    name: 'MapChart',
-    component: MapChart
-  },
-  {
-    path: '/worldMap',
-    name: 'WorldMap',
-    component: WorldMap
-  },
-  {
-    path: '/largeScreenStyle',
-    name: 'LargeScreenStyle',
-    component: LargeScreenStyle
-  }
+    {
+        path: '/',
+        name: 'Home',
+        component: HomeView,
+    },
+    {
+        path: '/lineChart',
+        name: 'LineChart',
+        component: LineChart,
+    },
+    {
+        path: '/histogramChart',
+        name: 'HistogramChart',
+        component: HistogramChart,
+    },
+    {
+        path: '/pieChart',
+        name: 'PieChart',
+        component: PieChart,
+    },
+    {
+        path: '/mapChart',
+        name: 'MapChart',
+        component: MapChart,
+    },
+    {
+        path: '/worldMap',
+        name: 'WorldMap',
+        component: WorldMap,
+    },
+    {
+        path: '/largeScreenStyle',
+        name: 'LargeScreenStyle',
+        component: LargeScreenStyle,
+    },
 ]
 
 export default createRouter({
-  history: createWebHashHistory(),
-  routes
+    history: createWebHashHistory(),
+    routes,
 })

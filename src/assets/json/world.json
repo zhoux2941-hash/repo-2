@@ -12036,7 +12036,11 @@
                     ]
                 ]
             },
-            "properties": { "name": "United Kingdom", "childNum": 14, "cp": [-2.5830348, 54.4598409] }
+            "properties": {
+                "name": "United Kingdom",
+                "childNum": 14,
+                "cp": [-2.5830348, 54.4598409]
+            }
         },
         {
             "geometry": {
