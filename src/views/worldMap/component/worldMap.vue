@@ -18,8 +18,10 @@ echarts.registerMap('world', worldAndChina as any)
 world.features.map((item: any) => {
     if (
         item.properties.name !== '中华人民共和国' &&
-        item.properties.name !== '沙特阿拉伯' &&
-        item.properties.name !== '俄罗斯'
+        item.properties.name !== '俄罗斯联邦' &&
+        item.properties.name !== '美利坚合众国' &&
+        item.properties.name !== '法兰西共和国' &&
+        item.properties.name !== '大不列颠及北爱尔兰联合王国'
     ) {
         item.properties.name = ''
     }
@@ -61,7 +63,7 @@ const initChart = (mapData: any): echarts.ECharts => {
             itemStyle: {
                 areaColor: 'rgba(75, 116, 241,1)',
                 borderColor: '#B0E0E6',
-                shadowColor: '#47cbfc',
+                shadowColor: '#471bfc',
                 shadowOffsetY: 0,
                 shadowBlur: 1,
                 borderWidth: 1,

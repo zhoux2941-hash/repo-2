@@ -11615,7 +11615,7 @@
                     ]
                 ]
             },
-            "properties": { "name": "France", "childNum": 10, "cp": [2.8719426, 46.8222422] }
+            "properties": { "name": "法兰西共和国", "childNum": 10, "cp": [2.8719426, 46.8222422] }
         },
         {
             "geometry": {
@@ -12037,7 +12037,7 @@
                 ]
             },
             "properties": {
-                "name": "United Kingdom",
+                "name": "大不列颠及北爱尔兰联合王国",
                 "childNum": 14,
                 "cp": [-2.5830348, 54.4598409]
             }
@@ -26333,7 +26333,7 @@
                     ]
                 ]
             },
-            "properties": { "name": "俄罗斯", "childNum": 73 }
+            "properties": { "name": "俄罗斯联邦", "childNum": 73 }
         },
         {
             "geometry": {
@@ -30795,7 +30795,7 @@
                     ]
                 ]
             },
-            "properties": { "name": "United States", "childNum": 76 }
+            "properties": { "name": "美利坚合众国", "childNum": 76 }
         },
         {
             "geometry": {
